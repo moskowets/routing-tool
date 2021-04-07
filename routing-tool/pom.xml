@@ -6,7 +6,7 @@
 
   <groupId>p.moskovets</groupId>
   <artifactId>routing-tool</artifactId>
-  <version>0.01-SNAPSHOT</version>
+  <version>0.02-SNAPSHOT</version>
 
   <name>routing-tool</name>
   <!-- FIXME change it to the project's website -->
@@ -61,6 +61,14 @@
                     </goals>
                 </execution>
             </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>10</source>
+                <target>10</target>
+            </configuration>
         </plugin>
     </plugins>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
