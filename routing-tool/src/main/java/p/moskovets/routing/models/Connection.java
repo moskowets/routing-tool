@@ -1,12 +1,17 @@
 package p.moskovets.routing.models;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class Connection {
+    @Expose
     private Tray tray;
     private Set<Cable> cables = new HashSet<>();
+    @Expose
     private final Position begin;
+    @Expose
     private final Position end;
 
     public Connection(Tray tray, Position begin, Position end) {

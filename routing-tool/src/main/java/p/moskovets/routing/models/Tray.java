@@ -10,8 +10,8 @@ import java.util.Objects;
 public class Tray {
 
     @Expose
-    private final String type;
-    private final int capacity;
+    private String type;
+    private int capacity;
 
     private static Map<String, Integer> capacities;
     static {
@@ -25,8 +25,19 @@ public class Tray {
     }
 
     public Tray(String type) {
-        this.type = type;
-        capacity = capacities.get(type);
+        try {
+            if (type == null || "".equals(type.trim())) {
+                this.type = "99x999";
+                capacity = Integer.MAX_VALUE;
+            } else {
+                this.type = type;
+                capacity = capacities.get(type);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            this.type  = "";
+            capacity = 0;
+        }
     }
 
     public String getType() {
@@ -38,7 +49,7 @@ public class Tray {
     }
 
     public TrayColour getColour(int cables) {
-        return TrayColour.getEnum ((int) (capacity / (double) cables * 100.0));
+        return TrayColour.getEnum ((int) ((double) cables / capacity * 100.0));
     }
 
     @Override

@@ -43,18 +43,7 @@ public class GraphNode {
         return null;
     }
 
-    public void findRoute(GraphNode node, RouteHelper helper) {
-        for (Link link: links) {
-            if (helper.canAddNode(link.getDestinationNode()))
-            {
-                if (link.getDestinationNode() == node){
-                    helper.putResult(link.getDestinationNode());
-                } else {
-                    findRoute(node, helper.clone(link.getDestinationNode()));
-                }
-            }
-        }
-    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -89,5 +78,9 @@ public class GraphNode {
 
     public String getName() {
         return name;
+    }
+
+    public HashSet<Link> getLinks() {
+        return links;
     }
 }

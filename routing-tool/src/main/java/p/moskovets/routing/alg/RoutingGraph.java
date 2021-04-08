@@ -8,8 +8,11 @@ import java.util.*;
 public class RoutingGraph {
 
     private final Set<GraphNode> nodes = new HashSet<>();
-    private final Map<Pair<GraphNode, GraphNode>, Connection> connections = new HashMap<>();
     private final List<Route> routes = new LinkedList<>();
+    // short connections
+    private final Map<Pair<GraphNode, GraphNode>, Connection> connections = new HashMap<>();
+    // full connections
+    private final Map<Pair<GraphNode, GraphNode>, LinkedList<GraphNode>> paths = new HashMap<>();
 
     public RoutingGraph(Set<GraphNode> nodes, List<Route> routes) {
         this.nodes.addAll(nodes);
@@ -78,13 +81,51 @@ public class RoutingGraph {
         return shortestPath;
     }
 
+    public void findRoute(GraphNode current, GraphNode dest, RouteHelper helper) {
+        for (Link link: current.getLinks()) {
+            if (helper.canAddNode(link.getDestinationNode()))
+            {
+                if (link.getDestinationNode() == dest){
+                    helper.putResult(link.getDestinationNode());
+                } else {
+                    findRoute(link.getDestinationNode(), dest, helper.clone(link.getDestinationNode()));
+                }
+            }
+        }
+    }
+
     public void process() {
 
         for (Route route: routes) {
             RouteHelper helper = new RouteHelper(route.getVorbiddenPath(), route.getBegin());
-            route.getBegin().findRoute(route.getEnd(), helper);
-            LinkedList<GraphNode> shortestPath = getShortestPath(helper.getPaths());
+            if (route.getEnd() == null) {
+                System.out.println("Destination point doesnt exist: " + route);
+                continue;
+            }
+            var pair = getPair(route.getBegin(), route.getEnd());
+            LinkedList<GraphNode> shortestPath = null;
+            if (paths.containsKey(pair)) {
+                shortestPath = paths.get(pair);
+            } else {
+                findRoute(route.getBegin(), route.getEnd(), helper);
+                if (helper.getPaths().size() == 0) {
+                    System.out.println("Unable to find path from: " + route.getBegin().getName() + " to: " + route.getEnd().getName());
+                    continue;
+                } else {
+                    shortestPath = getShortestPath(helper.getPaths());
+                    paths.put(pair, shortestPath);
+                }
+            }
             mergeConnections(shortestPath, route.getCables());
         }
+        System.out.println("Finish finding");
+    }
+
+    public Map<Pair<GraphNode, GraphNode>, Connection> getConnections() {
+        return connections;
+    }
+
+    public Map<Pair<GraphNode, GraphNode>, LinkedList<GraphNode>> getPaths() {
+        return paths;
     }
 }

@@ -1,19 +1,19 @@
 package p.moskovets.routing.models;
 
 public enum TrayColour {
-    Blue(25),
-    Green(50),
-    Yellow(75),
-    Red(100),
-    DarkRed(1000);
+    Blue("0,191,255"),
+    Green("0,255,0"),
+    Yellow("255,255,0"),
+    Red("255,127,0"),
+    DarkRed("255,0,0");
 
-    private int colour;
+    private String colour;
 
-    TrayColour(int colour) {
+    TrayColour(String colour) {
         this.colour = colour;
     }
 
-    public int getColour() {
+    public String getColour() {
         return colour;
     }
 
