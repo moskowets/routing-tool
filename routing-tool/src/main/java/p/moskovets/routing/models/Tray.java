@@ -3,24 +3,30 @@ package p.moskovets.routing.models;
 import com.google.gson.annotations.Expose;
 import p.moskovets.utils.TextHelpers;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Tray {
-/*    h38w350("38x350"),
-    h28w190("28x190"),
-    h60w400("60x400"),
-    h60w300("60x300"),
-    h60w200("60x200"),
-    h60w100("60x100"),
-    none("");
-*/
+
     @Expose
     private final String type;
     private final int capacity;
 
-    Tray(String type, int capacity) {
+    private static Map<String, Integer> capacities;
+    static {
+        capacities = new HashMap<>();
+        capacities.put("28x190", 26);
+        capacities.put("38x350", 90);
+        capacities.put("60x400", 148);
+        capacities.put("60x300", 112);
+        capacities.put("60x200", 72);
+        capacities.put("60x100", 36);
+    }
+
+    public Tray(String type) {
         this.type = type;
-        this.capacity = capacity;
+        capacity = capacities.get(type);
     }
 
     public String getType() {
@@ -29,6 +35,10 @@ public class Tray {
 
     public int getCapacity() {
         return capacity;
+    }
+
+    public TrayColour getColour(int cables) {
+        return TrayColour.getEnum ((int) (capacity / (double) cables * 100.0));
     }
 
     @Override

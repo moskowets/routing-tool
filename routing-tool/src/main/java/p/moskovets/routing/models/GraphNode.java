@@ -2,10 +2,13 @@ package p.moskovets.routing.models;
 
 import com.google.gson.annotations.Expose;
 import p.moskovets.routing.alg.RouteHelper;
+import p.moskovets.routing.dataimport.models.Level;
+import p.moskovets.utils.Pair;
 import p.moskovets.utils.TextHelpers;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 
 public class GraphNode {
@@ -15,10 +18,16 @@ public class GraphNode {
     @Expose
     private final Position position;
     private final HashSet<Link> links = new HashSet<>();
+    //private final Pair<Level, Map<String, String>> raw;
 
-    public GraphNode(String name, Position position) {
+    public GraphNode(String name, Position position/*, Pair<Level, Map<String, String>> raw*/) {
         this.name = name;
         this.position = position;
+        //this.raw = raw;
+    }
+
+    public void addLink(Link link) {
+        this.links.add(link);
     }
 
     public void addAllLinks(Collection<Link> links) {
@@ -76,5 +85,9 @@ public class GraphNode {
 
     public Position getPosition() {
         return position;
+    }
+
+    public String getName() {
+        return name;
     }
 }
